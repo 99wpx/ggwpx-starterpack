@@ -1,7 +1,5 @@
 # ggwpx-starterpack
 
-![99wpx's Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=99wpx&theme=dracula&show_icons=true&hide_border=false&layout=compact)
-
 
 The `ggwpx-starterpack` script for FiveM provides new players with a starter pack containing items, cash, and a vehicle. Players can claim the starter pack by interacting with a designated ped.
 
