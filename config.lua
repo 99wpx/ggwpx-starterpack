@@ -11,8 +11,15 @@ Config = {}
 --=========================================================
 
 -- Coordinates for the ped used to claim the starter pack
-Config.PedCoords = vector4(-1036.28, -2734.32, 20.17, 162.71) -- Adjust to desired location
+Config.PedCoords = {
+    vector4(-1036.28, -2734.32, 20.17, 162.71),
+    vector4(-1033.3270, -2739.6233, 20.1693, 62.6877),
+    vector4(-1042.2426, -2734.9429, 20.1693, 245.4828),
+}
+
 Config.PedModel = 'u_m_m_jewelsec_01' -- Ped model
+
+Config.ClaimCommand = "claimstarter" -- Command
 
 -- Coordinates for the vehicle to be spawned
 Config.VehicleSpawnCoords = {
@@ -22,6 +29,8 @@ Config.VehicleSpawnCoords = {
 }
 
 Config.VehicleModel = 'adder' -- Vehicle model
+Config.FuelSystem = "cdn-fuel" -- "legacyfuel", "cdn-fuel"
+Config.DefaultFuelLevel = 50 -- Level Fuel (0-100)
 Config.SpawnWithVehicle = true  -- Set this to false if you don't want the player to spawn inside the vehicle
 
 -- Items given to the player
