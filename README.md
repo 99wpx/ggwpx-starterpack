@@ -1,7 +1,5 @@
 # ggwpx-starterpack
 
-# Hi there 👋, I'm [Your Name]!
-
 ## 📈 GitHub Stats:
 ![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=99wpx&show_icons=true&count_private=true&hide=prs&theme=radical)
 
