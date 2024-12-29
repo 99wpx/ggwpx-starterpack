@@ -89,7 +89,7 @@ RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
 end)
 
 RegisterNetEvent('ggwpx-starterpack:client:spawnVehicle')
-AddEventHandler('starterpack:client:spawnVehicle', function(citizenid)
+AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
     local vehicleModel = Config.VehicleModel
     local vehicleHash = GetHashKey(vehicleModel)
     local spawnIndex = math.random(1, #Config.VehicleSpawnCoords) 
