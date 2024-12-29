@@ -1,53 +1,60 @@
 # ggwpx-starterpack
 
-The `ggwpx-starterpack` script for FiveM provides players with a starter pack that includes items, cash, and a vehicle when they interact with a specified ped.
+The `ggwpx-starterpack` script for FiveM provides new players with a starter pack containing items, cash, and a vehicle. Players can claim the starter pack by interacting with a designated ped.
+
+---
 
 ## Features
 
-- **Starter Pack**: Gives players items, cash, and bank money.
-- **Vehicle**: Spawns a vehicle for the player.
-- **Targeting**: Uses `interact`, `qb-target` and `ox-target` for ped interaction.
-- **Logging**: Logs claims to Discord.
+- 🎁 **Starter Pack**: Items, cash, and bank money are given to the player.
+- 🚗 **Vehicle Spawn**: Spawns a vehicle at predefined locations.
+- 🎯 **Target System Support**: Compatible with `interact`, `qb-target`, and `ox-target`.
+- 🖋️ **Discord Logging**: Logs all starter pack claims to Discord.
+- 📦 **Configurable Items**: Easy customization of starter items, vehicles, and other parameters.
+
+---
 
 ## Setup
 
-1. **Configuration**
+### 1. Configuration
 
-  Config = {}
-  
--- Coordinates for the ped used to claim the starter pack
-Config.PedCoords = vector4(-1036.28, -2734.32, 20.17, 162.71) -- Adjust to desired location
-Config.PedModel = 'u_m_m_jewelsec_01' -- Ped model
+Edit the configuration file to match your server's needs:
 
--- Coordinates for the vehicle to be spawned
+```lua
+Config = {}
+
+-- Ped configuration
+Config.PedCoords = vector4(-1036.28, -2734.32, 20.17, 162.71)  -- Ped spawn location
+Config.PedModel = 'u_m_m_jewelsec_01'                         -- Ped model
+
+-- Vehicle spawn locations
 Config.VehicleSpawnCoords = {
-    vector4(-1040.2572, -2726.4758, 19.6629, 240.6792),  -- Spawn 1
-    vector4(-1034.8708, -2729.5725, 19.6641, 241.0679),  -- Spawn 2
-    vector4(-1029.3840, -2732.6367, 19.6681, 240.2436),  -- Spawn 3
+    vector4(-1040.2572, -2726.4758, 19.6629, 240.6792),  -- Spawn Point 1
+    vector4(-1034.8708, -2729.5725, 19.6641, 241.0679),  -- Spawn Point 2
+    vector4(-1029.3840, -2732.6367, 19.6681, 240.2436),  -- Spawn Point 3
 }
+Config.VehicleModel = 'adder'                              -- Vehicle model
+Config.SpawnWithVehicle = true                             -- Set false to not place the player inside the vehicle
 
-Config.VehicleModel = 'adder' -- Vehicle model
-Config.SpawnWithVehicle = true  -- Set this to false if you don't want the player to spawn inside the vehicle
-
--- Items given to the player
+-- Starter items
 Config.StarterItems = {
     { item = 'water_bottle', count = 10 },
     { item = 'sandwich', count = 10 },
     { item = 'phone', count = 1 },
 }
 
--- Amount of money given
-Config.CashAmount = 1000 -- Cash amount
-Config.BankAmount = 10000 -- Bank amount
+-- Money amounts
+Config.CashAmount = 1000       -- Cash given to the player
+Config.BankAmount = 10000      -- Bank money given to the player
 
--- Discord logging configuration
-Config.DiscordWebhook = 'https://discord.com/api/webhooks/1284349336179703828/MjHRcV_tlc5QnxK6CwxZYxzAcUg5antf6fuuINDr-2a9qNngYzCSyleXpmnuDdoqqmd5'
+-- Discord logging
+Config.DiscordWebhook = 'https://discord.com/api/webhooks/...'  -- Add your webhook URL here
 
 -- Database table
-Config.ClaimTable = 'player_starterpacks' 
+Config.ClaimTable = 'player_starterpacks'  -- Tracks claims in the database
 
--- Target System
-Config.TargetSystem = 'interact' -- Options: 'qb-target', 'ox-target', 'interact'
+-- Target system
+Config.TargetSystem = 'interact'  -- Options: 'qb-target', 'ox-target', 'interact'
 
--- Inventory System
-Config.InventorySystem = 'qb-inventory' -- Options: 'qb-inventory', 'ox_inventory'
+-- Inventory system
+Config.InventorySystem = 'qb-inventory'  -- Options: 'qb-inventory', 'ox_inventory'
