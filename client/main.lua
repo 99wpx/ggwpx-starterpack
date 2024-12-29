@@ -6,56 +6,57 @@ Citizen.CreateThread(function()
         Wait(500)
     end
 
-    local spawnedPed = CreatePed(4, GetHashKey(Config.PedModel), Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 1.0, Config.PedCoords.w, false, true)
-    FreezeEntityPosition(spawnedPed, true)
-    SetEntityInvincible(spawnedPed, true)
-    SetBlockingOfNonTemporaryEvents(spawnedPed, true)
-    if Config.TargetSystem == 'qb-target' and exports['qb-target'] then
-        exports['qb-target']:AddTargetEntity(spawnedPed, {
-            options = {
+    for _, pedCoords in ipairs(Config.PedCoords) do
+        local x, y, z, w = pedCoords.x, pedCoords.y, pedCoords.z, pedCoords.w
+        local spawnedPed = CreatePed(4, GetHashKey(Config.PedModel), x, y, z - 1.0, w, false, true)
+        FreezeEntityPosition(spawnedPed, true)
+        SetEntityInvincible(spawnedPed, true)
+        SetBlockingOfNonTemporaryEvents(spawnedPed, true)
+
+        if Config.TargetSystem == 'qb-target' and exports['qb-target'] then
+            exports['qb-target']:AddTargetEntity(spawnedPed, {
+                options = {
+                    {
+                        type = "client",
+                        event = "ggwpx-starterpack:client:claimStarterpack",
+                        icon = "fas fa-box-open",
+                        label = "Claim Starter Pack",
+                    },
+                },
+                distance = 2.5
+            })
+        elseif Config.TargetSystem == 'ox_target' and exports['ox_target'] then
+            exports['ox_target']:AddTargetEntity(spawnedPed, {
                 {
-                    type = "client",
-                    event = "ggwpx-starterpack:client:claimStarterpack",
+                    name = "claimStarterpack",
                     icon = "fas fa-box-open",
                     label = "Claim Starter Pack",
-                },
-            },
-            distance = 2.5
-        })
-    
-    elseif Config.TargetSystem == 'ox_target' and exports['ox_target'] then
-        exports['ox_target']:AddTargetEntity(spawnedPed, {
-            {
-                name = "claimStarterpack",
-                icon = "fas fa-box-open",
-                label = "Claim Starter Pack",
-                onSelect = function()
-                    TriggerEvent('ggwpx-starterpack:client:claimStarterpack')  
-                end,
-                distance = 2.5
-            }
-        })
-
-    elseif Config.TargetSystem == 'interact' then
-        exports.interact:AddEntityInteraction({
-            netId = NetworkGetNetworkIdFromEntity(spawnedPed),
-            name = 'claimStarterpack',  
-            id = 'starterpack', 
-            distance = 8.5,
-            interactDst = 2.5,
-            options = {
-                {
-                    label = 'Claim Starter Pack',
-                    action = function(entity, coords, args)
-                        TriggerEvent('ggwpx-starterpack:client:claimStarterpack')
+                    onSelect = function()
+                        TriggerEvent('ggwpx-starterpack:client:claimStarterpack')  
                     end,
+                    distance = 2.5
+                }
+            })
+        elseif Config.TargetSystem == 'interact' then
+            exports.interact:AddEntityInteraction({
+                netId = NetworkGetNetworkIdFromEntity(spawnedPed),
+                name = 'claimStarterpack',  
+                id = 'starterpack', 
+                distance = 8.5,
+                interactDst = 2.5,
+                options = {
+                    {
+                        label = 'Claim Starter Pack',
+                        action = function(entity, coords, args)
+                            TriggerEvent('ggwpx-starterpack:client:claimStarterpack')
+                        end,
+                    },
                 },
-            },
-        })
-    else
-        print("Target system not configured or missing dependencies.")
+            })
+        else
+            print("Target system not configured or missing dependencies.")
+        end
     end
-    
 end)
 
 RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
@@ -88,6 +89,10 @@ RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
     end)
 end)
 
+RegisterCommand(Config.ClaimCommand, function(source, args, rawCommand)
+    TriggerEvent('ggwpx-starterpack:client:claimStarterpack')
+end, false)
+
 RegisterNetEvent('ggwpx-starterpack:client:spawnVehicle')
 AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
     local vehicleModel = Config.VehicleModel
@@ -102,15 +107,32 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
     if DoesEntityExist(vehicle) then
         local plate = QBCore.Functions.GetPlate(vehicle)
         SetVehicleNumberPlateText(vehicle, plate)
+
+        if Config.FuelSystem == "legacyfuel" then
+            if exports['LegacyFuel'] then
+                exports['LegacyFuel']:SetFuel(vehicle, Config.DefaultFuelLevel)
+            else
+                print("LegacyFuel is not loaded or not installed.")
+            end
+        elseif Config.FuelSystem == "cdn-fuel" then
+            if exports['cdn-fuel'] then
+                exports['cdn-fuel']:SetFuel(vehicle, Config.DefaultFuelLevel)
+            else
+                print("CDN-Fuel is not loaded or not installed.")
+            end
+        else
+            print("Fuel system configuration is invalid.")
+        end
+
         if Config.SpawnWithVehicle then
             TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
-        else
-            print("Vehicle spawned, but player will not be placed inside.")
         end
+
         TriggerServerEvent('ggwpx-starterpack:server:giveVehicleKey', plate)
         TriggerEvent('qb-vehiclekeys:client:AddKeys', plate)
     else
         print('Failed to spawn vehicle. The model may be invalid or the coordinates are incorrect.')
     end
 end)
+
 
