@@ -3,6 +3,7 @@ QBCore = exports['qb-core']:GetCoreObject()
 RegisterNetEvent('ggwpx-starterpack:server:giveStarterPack', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
+
     MySQL.Async.fetchScalar('SELECT 1 FROM '..Config.ClaimTable..' WHERE citizenid = @citizenid', {
         ['@citizenid'] = Player.PlayerData.citizenid
     }, function(result)
