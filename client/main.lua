@@ -69,28 +69,31 @@ end)
 RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
     QBCore.Functions.TriggerCallback('ggwpx-starterpack:server:canClaim', function(canClaim)
         if canClaim then
-            QBCore.Functions.Progressbar('claiming_starterpack', 'Claiming Starter Pack...', 5000, false, true, {
+            QBCore.Functions.Progressbar('claiming_starterpack', 'Receiving Starter Pack...', 5000, false, true, {
                 disableMovement = false,
                 disableCarMovement = true,
                 disableMouse = false,
                 disableCombat = false,
             }, {}, {}, {}, function()
+                local playerPed = PlayerPedId()
+                local animDictPlayer = "anim@heists@box_carry@"
+                local animNamePlayer = "idle"
+                
+                RequestAnimDict(animDictPlayer)
+                while not HasAnimDictLoaded(animDictPlayer) do
+                    Wait(500)
+                end
+                TaskPlayAnim(playerPed, animDictPlayer, animNamePlayer, 8.0, -8.0, 5000, 1, 0, false, false, false)
+                local boxProp = CreateObject(GetHashKey('hei_prop_heist_box'), 0, 0, 0, true, true, true)
+                AttachEntityToEntity(boxProp, playerPed, GetPedBoneIndex(playerPed, 18905), 0.025, 0.08, 0.255, -145.0, 290.0, 0.0, true, true, false, true, 1, true)
+                Citizen.Wait(5000) 
+                ClearPedTasks(playerPed)
+                DeleteObject(boxProp)
                 TriggerServerEvent('ggwpx-starterpack:server:giveStarterPack')
+                QBCore.Functions.Notify('You have successfully claimed your starter pack!', 'success')
             end)
-            
-            local ped = PlayerPedId()
-            local animDict = "anim@heists@box_carry@" 
-            local animName = "idle" 
-            RequestAnimDict(animDict)
-            while not HasAnimDictLoaded(animDict) do
-                Wait(500)
-            end
-            TaskPlayAnim(ped, animDict, animName, 8.0, -8.0, -1, 1, 0, false, false, false)
-            local boxProp = CreateObject(GetHashKey('hei_prop_heist_box'), 0, 0, 0, true, true, true)
-            AttachEntityToEntity(boxProp, ped, GetPedBoneIndex(ped, 18905), 0.025, 0.08, 0.255, -145.0, 290.0, 0.0, true, true, false, true, 1, true)
-            Citizen.Wait(5000) 
-            ClearPedTasks(ped)
-            DeleteObject(boxProp)
+        else
+            QBCore.Functions.Notify('You have already claimed your starter pack!', 'error')
         end
     end)
 end)
@@ -101,13 +104,16 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
     local vehicleHash = GetHashKey(vehicleModel)
     local spawnIndex = math.random(1, #Config.VehicleSpawnCoords) 
     local coords = Config.VehicleSpawnCoords[spawnIndex] 
+
     RequestModel(vehicleHash)
     while not HasModelLoaded(vehicleHash) do
         Wait(500)
     end
+
     if not HasModelLoaded(vehicleHash) then
         return
     end
+
     local vehicle = CreateVehicle(vehicleHash, coords.x, coords.y, coords.z, coords.w, true, false)
     if DoesEntityExist(vehicle) then
         local plate = QBCore.Functions.GetPlate(vehicle)
@@ -122,6 +128,7 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
                 exports['cdn-fuel']:SetFuel(vehicle, Config.DefaultFuelLevel)
             end
         end
+
         if Config.SpawnWithVehicle then
             TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
         end
@@ -129,3 +136,5 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
         TriggerEvent('qb-vehiclekeys:client:AddKeys', plate)
     end
 end)
+
+
