@@ -8,7 +8,7 @@ Config = {}
 --|  |__| | |  |__| |   \    /\    /    |  |       /  .  \  
 -- \______|  \______|    \__/  \__/     |__|      /__/ \__\ 
 --=========================================================
---        JOIN DISCORD : discord.gg/fsyxppyr8W6
+--        JOIN DISCORD : https://discord.gg/Q6AbZgkJFq
 --=========================================================
 
 -- Pedestrian Configuration (NPC for Starter Pack Claim)
