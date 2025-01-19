@@ -47,8 +47,8 @@ Citizen.CreateThread(function()
 
     elseif Config.TargetSystem == 'interact' then
         if exports['interact'] then
-            exports.interact:AddEntityInteraction({
-                netId = NetworkGetNetworkIdFromEntity(spawnedPed),
+            exports.interact:AddInteraction({
+                coords = vec3(Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z),
                 name = 'claimStarterpack',  
                 id = 'starterpack', 
                 distance = 8.5,
