@@ -1,5 +1,24 @@
 QBCore = exports['qb-core']:GetCoreObject()
 
+-- Function to register the vehicle (Adapt to your database)
+local function RegisterVehicle(citizenid, plate, vehicleModel)
+    if Config.PlayerVehiclesTable and Config.PlayerVehiclesTable ~= '' then
+        MySQL.Async.execute("INSERT INTO " .. Config.PlayerVehiclesTable .. " (citizenid, plate, vehicle) VALUES (@citizenid, @plate, @vehicle)", {
+            ['@citizenid'] = citizenid,
+            ['@plate'] = plate,
+            ['@vehicle'] = vehicleModel
+        }, function(rowsChanged)
+            if rowsChanged > 0 then
+                print("Vehicle registered in database for citizenid: " .. citizenid .. " plate: " .. plate)
+            else
+                print("Failed to register vehicle in database for citizenid: " .. citizenid .. " plate: " .. plate)
+            end
+        end)
+    else
+        print("Config.PlayerVehiclesTable not set, skipping vehicle registration!")
+    end
+end
+
 RegisterNetEvent('ggwpx-starterpack:server:giveStarterPack', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -32,7 +51,7 @@ RegisterNetEvent('ggwpx-starterpack:server:giveStarterPack', function()
             else
                 print("Inventory system not configured or missing dependencies.")
             end
-            TriggerEvent('ggwpx-starterpack:server:logToDiscord', Player.PlayerData.name .. " claimed their starter pack.")
+            TriggerEvent('ggwpx-starterpack:server:logToDiscord', Player.PlayerData.name .. " claimed their starter pack");
             MySQL.Async.execute('INSERT INTO '..Config.ClaimTable..' (citizenid) VALUES (@citizenid)', {
                 ['@citizenid'] = Player.PlayerData.citizenid
             })
@@ -47,7 +66,11 @@ RegisterNetEvent('ggwpx-starterpack:server:giveVehicleKey', function(plate)
     local Player = QBCore.Functions.GetPlayer(src)
 
     if Player then
-        TriggerEvent('qb-vehiclekeys:addKey', plate, Player.PlayerData.citizenid)
+        print("Attempting to give vehicle key for plate: " .. plate .. " to citizenid: " .. Player.PlayerData.citizenid) -- DEBUG
+        TriggerEvent('qb-vehiclekeys:addKey', plate, Player.PlayerData.citizenid) -- Pass correct citizenid
+                --Register the car server-side
+        RegisterVehicle(Player.PlayerData.citizenid, plate, Config.VehicleModel)  -- Register after key is given
+
     end
 end)
 
