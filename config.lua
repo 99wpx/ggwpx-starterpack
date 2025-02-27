@@ -1,18 +1,18 @@
 Config = {}
 
 --=========================================================
---  _______   ______ ____    __    ____  ______   ___   ___ 
--- /  _____| /  ____|\   \  /  \  /   / |   _  \  \  \ /  / 
---|  |  __  |  |  __  \   \/    \/   /  |  |_)  |  \  V  /  
---|  | |_ | |  | |_ |  \            /   |   ___/    >   <   
---|  |__| | |  |__| |   \    /\    /    |  |       /  .  \  
--- \______|  \______|    \__/  \__/     |__|      /__/ \__\ 
+--  _______   ______ ____    __    ____  ______   ___   ___
+-- /  _____| /  ____|\   \  /  \  /   / |   _  \  \  \ /  /
+--|  |  __  |  |  __  \   \/    \/   /  |  |_)  |  \  V  /
+--|  | |_ | |  | |_ |  \            /   |   ___/    >   <
+--|  |__| | |  |__| |   \    /\    /    |  |       /  .  \
+-- \______|  \______|    \__/  \__/     |__|      /__/ \__\
 --=========================================================
 --        JOIN DISCORD : https://discord.gg/Q6AbZgkJFq
 --=========================================================
 
 -- Pedestrian Configuration (NPC for Starter Pack Claim)
-Config.PedCoords = vector4(-1036.28, -2734.32, 20.17, 162.71) -- Coordinates for NPC spawn
+Config.PedCoords = vector4(-762.3616, -1306.4858, 5.1503, 314.2458) -- Coordinates for NPC spawn
 Config.PedModel = 'u_m_m_jewelsec_01' -- Ped model
 
 -- Target System Configuration
@@ -23,9 +23,9 @@ Config.InventorySystem = 'qb-inventory'  -- 'qb-inventory', 'ox_inventory'
 
 -- Vehicle Spawn Configuration
 Config.VehicleSpawnCoords = {
-    vector4(-1040.2572, -2726.4758, 19.6629, 240.6792),  -- Spawn Point 1
-    vector4(-1034.8708, -2729.5725, 19.6641, 241.0679),  -- Spawn Point 2
-    vector4(-1029.3840, -2732.6367, 19.6681, 240.2436),  -- Spawn Point 3
+    vector4(-743.3543, -1311.4805, 5.0004, 43.0077),  -- Spawn Point 1
+    vector4(-741.1268, -1308.8752, 5.0004, 46.8685),  -- Spawn Point 2
+    vector4(-739.2194, -1306.3711, 5.0004, 47.3011),  -- Spawn Point 3
 }
 
 Config.VehicleModel = 'adder'  -- Vehicle model (e.g., 'adder')
@@ -35,9 +35,9 @@ Config.DefaultFuelLevel = 50    -- Default fuel level (0-100)
 
 -- Starter Pack Items (Items given to the player)
 Config.StarterItems = {
-    { item = 'water_bottle', count = 10 }, 
-    { item = 'sandwich', count = 10 },      
-    { item = 'phone', count = 1 },        
+    { item = 'water_bottle', count = 10 },
+    { item = 'sandwich', count = 10 },
+    --{ item = 'phone', count = 1 },
 }
 
 -- Monetary Configuration (Starting funds)
@@ -45,8 +45,10 @@ Config.CashAmount = 1000   -- Amount of cash given
 Config.BankAmount = 10000  -- Amount of money in the bank
 
 -- Discord Webhook for Logging
-Config.DiscordWebhook = 'https://discord.com/api/webhooks/1284349336179703828/MjHRcV_tlc5QnxK6CwxZYxzAcUg5antf6fuuINDr-2a9qNngYzCSyleXpmnuDdoqqmd5'
+Config.DiscordWebhook = ''
 
 -- Database Table for Starter Pack Claims
-Config.ClaimTable = 'player_starterpacks' 
+Config.ClaimTable = 'player_starterpacks'
 
+-- Optional: Table for player_vehicles
+Config.PlayerVehiclesTable = 'player_vehicles' -- Change this to match your table name
