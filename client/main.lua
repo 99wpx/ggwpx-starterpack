@@ -38,7 +38,7 @@ Citizen.CreateThread(function()
                     icon = "fas fa-box-open",
                     label = "Claim Starter Pack",
                     onSelect = function()
-                        TriggerEvent('ggwpx-starterpack:client:claimStarterpack')  
+                        TriggerEvent('ggwpx-starterpack:client:claimStarterpack')
                     end,
                     distance = 2.5
                 }
@@ -49,8 +49,8 @@ Citizen.CreateThread(function()
         if exports['interact'] then
             exports.interact:AddInteraction({
                 coords = vec3(Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z),
-                name = 'claimStarterpack',  
-                id = 'starterpack', 
+                name = 'claimStarterpack',
+                id = 'starterpack',
                 distance = 8.5,
                 interactDst = 2.5,
                 options = {
@@ -78,7 +78,7 @@ RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
                 local playerPed = PlayerPedId()
                 local animDictPlayer = "anim@heists@box_carry@"
                 local animNamePlayer = "idle"
-                
+
                 RequestAnimDict(animDictPlayer)
                 while not HasAnimDictLoaded(animDictPlayer) do
                     Wait(500)
@@ -86,7 +86,7 @@ RegisterNetEvent('ggwpx-starterpack:client:claimStarterpack', function()
                 TaskPlayAnim(playerPed, animDictPlayer, animNamePlayer, 8.0, -8.0, 5000, 1, 0, false, false, false)
                 local boxProp = CreateObject(GetHashKey('hei_prop_heist_box'), 0, 0, 0, true, true, true)
                 AttachEntityToEntity(boxProp, playerPed, GetPedBoneIndex(playerPed, 18905), 0.025, 0.08, 0.255, -145.0, 290.0, 0.0, true, true, false, true, 1, true)
-                Citizen.Wait(5000) 
+                Citizen.Wait(5000)
                 ClearPedTasks(playerPed)
                 DeleteObject(boxProp)
                 TriggerServerEvent('ggwpx-starterpack:server:giveStarterPack')
@@ -102,8 +102,8 @@ RegisterNetEvent('ggwpx-starterpack:client:spawnVehicle')
 AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
     local vehicleModel = Config.VehicleModel
     local vehicleHash = GetHashKey(vehicleModel)
-    local spawnIndex = math.random(1, #Config.VehicleSpawnCoords) 
-    local coords = Config.VehicleSpawnCoords[spawnIndex] 
+    local spawnIndex = math.random(1, #Config.VehicleSpawnCoords)
+    local coords = Config.VehicleSpawnCoords[spawnIndex]
 
     RequestModel(vehicleHash)
     while not HasModelLoaded(vehicleHash) do
@@ -119,6 +119,10 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
         local plate = QBCore.Functions.GetPlate(vehicle)
         SetVehicleNumberPlateText(vehicle, plate)
 
+        SetVehicleFixed(vehicle)
+        SetVehicleEngineHealth(vehicle, 1000.0)
+        SetVehicleBodyHealth(vehicle, 1000.0)
+
         if Config.FuelSystem == "legacyfuel" then
             if exports['LegacyFuel'] then
                 exports['LegacyFuel']:SetFuel(vehicle, Config.DefaultFuelLevel)
@@ -132,9 +136,9 @@ AddEventHandler('ggwpx-starterpack:client:spawnVehicle', function(citizenid)
         if Config.SpawnWithVehicle then
             TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
         end
+
         TriggerServerEvent('ggwpx-starterpack:server:giveVehicleKey', plate)
-        TriggerEvent('qb-vehiclekeys:client:AddKeys', plate)
+        TriggerEvent('qb-vehiclekeys:client:AddKeys', plate) -- Assuming this adds the key client-side too.
+
     end
 end)
-
-
